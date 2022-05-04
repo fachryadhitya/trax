@@ -4,12 +4,15 @@ import prisma from "../../lib/prisma";
 
 export default validateRoutes(
   async (req: NextApiRequest, res: NextApiResponse, user: any) => {
-    const playlistCount = await prisma.playlist.count({
+    const playlist = await prisma.playlist.findMany({
       where: {
         userId: user.id,
       },
+      orderBy: {
+        name: 'asc'
+      }
     });
 
-    return res.json({ ...user, playlistCount });
+    return res.json(playlist);
   }
 );

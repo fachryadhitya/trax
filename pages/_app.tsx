@@ -3,6 +3,8 @@ import "reset-css";
 import { AppProps } from "next/app";
 import PlayerLayout from "../components/playerLayout";
 import { NextComponentType } from "next";
+import { StoreProvider } from "easy-peasy";
+import { store } from "../lib/store";
 
 const theme = extendTheme({
   colors: {
@@ -39,13 +41,15 @@ type CustomAppProps = AppProps & {
 function MyApp({ Component, pageProps }: CustomAppProps) {
   return (
     <ChakraProvider theme={theme}>
-      {Component.authPage ? (
-        <Component {...pageProps} />
-      ) : (
-        <PlayerLayout>
+      <StoreProvider store={store}>
+        {Component.authPage ? (
           <Component {...pageProps} />
-        </PlayerLayout>
-      )}
+        ) : (
+          <PlayerLayout>
+            <Component {...pageProps} />
+          </PlayerLayout>
+        )}
+      </StoreProvider>
     </ChakraProvider>
   );
 }
